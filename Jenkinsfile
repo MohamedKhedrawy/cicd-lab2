@@ -1,8 +1,8 @@
 pipeline {
-
     agent any
 
-    stage('Checkout') {
+    stages {
+        stage('Checkout') {
             steps {
                 checkout scm
             }
@@ -18,21 +18,11 @@ pipeline {
             steps {
                 sh 'mvn test'
             }
-            post {
-                always {
-                    junit '**/target/surefire-reports/*.xml'
-                }
-            }
         }
 
         stage('Package') {
             steps {
                 sh 'mvn package -DskipTests'
-            }
-            post {
-                success {
-                    archiveArtifacts artifacts: 'target/*.jar, target/*.war', allowEmptyArchive: true
-                }
             }
         }
     }
@@ -42,7 +32,7 @@ pipeline {
             echo 'Declarative Pipeline executed successfully!'
         }
         failure {
-            echo 'Declarative Pipeline failed. Check the console output.'
+            echo 'Declarative Pipeline failed.'
         }
     }
 }
