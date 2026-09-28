@@ -1,38 +1,25 @@
-pipeline {
-    agent any
-
-    stages {
+node {
+    try {
         stage('Checkout') {
-            steps {
-                checkout scm
-            }
+            checkout scm
         }
 
         stage('Compile') {
-            steps {
-                sh 'mvn clean compile'
-            }
+            sh 'mvn clean compile'
         }
 
         stage('Unit Test') {
-            steps {
-                sh 'mvn test'
-            }
+            sh 'mvn test'
         }
 
         stage('Package') {
-            steps {
-                sh 'mvn package -DskipTests'
-            }
+            sh 'mvn package -DskipTests'
         }
-    }
 
-    post {
-        success {
-            echo 'Declarative Pipeline executed successfully!'
-        }
-        failure {
-            echo 'Declarative Pipeline failed.'
-        }
+        echo 'Scripted Pipeline executed successfully!'
+    } catch (Exception e) {
+        echo "Scripted Pipeline failed: ${e.getMessage()}"
+        currentBuild.result = 'FAILURE'
+        throw e
     }
 }
