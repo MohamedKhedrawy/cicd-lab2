@@ -1,25 +1,40 @@
-node {
-    try {
+@Library('my-shared-lib') _
+
+pipeline {
+    agent any
+
+    stages {
         stage('Checkout') {
-            checkout scm
+            steps {
+                checkout scm
+            }
         }
 
         stage('Compile') {
-            sh 'mvn clean compile'
+            steps {
+                mvnCompile()
+            }
         }
 
         stage('Unit Test') {
-            sh 'mvn test'
+            steps {
+                mvnTest()
+            }
         }
 
         stage('Package') {
-            sh 'mvn package -DskipTests'
+            steps {
+                mvnPackage()
+            }
         }
+    }
 
-        echo 'Scripted Pipeline executed successfully!'
-    } catch (Exception e) {
-        echo "Scripted Pipeline failed: ${e.getMessage()}"
-        currentBuild.result = 'FAILURE'
-        throw e
+    post {
+        success {
+            echo 'Pipeline succeeded!'
+        }
+        failure {
+            echo 'Pipeline failed'
+        }
     }
 }
