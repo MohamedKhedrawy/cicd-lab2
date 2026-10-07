@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: java-app
+  namespace: mohamed
+  labels:
+    app: java-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: java-app
+  template:
+    metadata:
+      labels:
+        app: java-app
+    spec:
+      containers:
+        - name: java-app
+          image: mohamedkhedrawy03/cicd-lab2:latest
+          ports:
+            - containerPort: 8090
+          envFrom:
+            - configMapRef:
+                name: java-app-config

@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: java-app-config
+  namespace: mohamed
+data:
+  APP_NAME: "java-app"
+  APP_PORT: "8090"
+  ENV: "production"
