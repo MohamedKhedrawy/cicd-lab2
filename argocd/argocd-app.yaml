@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mohamed-app
+  namespace: argocd
+spec:
+  project: mohamed-project
+  source:
+    repoURL: https://github.com/MohamedKhedrawy/cicd-lab2
+    targetRevision: main
+    path: mohamed
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: mohamed
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

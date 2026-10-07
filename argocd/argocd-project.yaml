@@ -1,0 +1,15 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: mohamed-project
+  namespace: argocd
+spec:
+  description: Mohamed's ArgoCD project
+  sourceRepos:
+    - 'https://github.com/MohamedKhedrawy/cicd-lab2'
+  destinations:
+    - namespace: mohamed
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
